@@ -8,8 +8,12 @@ namespace Emailer.Services
 {
     public class Mailer
     {
-        private const string username = "camposa22";
-        private const string password = "*Zbl2726501";
+        private const string username = "";
+        private const string password = "";
+
+        private const string from = "";
+
+        private const string to = "";
 
         public Mailer()
         {
@@ -31,7 +35,7 @@ namespace Emailer.Services
 
             var subject = "Testing from .net core";
             var body = "this is just a test";
-            var message = new MailMessage("camposa22@gmail.com","camposa22@gmail.com", subject, body)
+            var message = new MailMessage("","", subject, body)
             {
                 BodyEncoding = UTF8Encoding.UTF8,
                 DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure
