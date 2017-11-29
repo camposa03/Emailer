@@ -8,26 +8,30 @@ using Microsoft.AspNetCore.Mvc;
 namespace Emailer.Controllers
 {
     [Route("api/[controller]")]
-    public class ValuesController : Controller
+    public class EmailController : Controller
     {
-        // GET api/values
+        private readonly IEmailer emailer;
+        public EmailController(IEmailer emailer)
+        {
+            this.emailer = emailer;
+        }
+        // GET api/email
         [HttpGet]
         public async Task<IEnumerable<string>> GetAsync()
         {
-            var emailer = new Mailer();
             await emailer.SendAsync();
             return new string[] { "value1", "value2" };
      
         }
 
-        // GET api/values/5
+        // GET api/email/5
         [HttpGet("{id}")]
         public string Get(int id)
         {
             return "value";
         }
 
-        // POST api/values
+        // POST api/email
         [HttpPost]
         public void Post([FromBody]string value)
         {

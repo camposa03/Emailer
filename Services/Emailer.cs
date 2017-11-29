@@ -6,13 +6,11 @@ using System.Threading.Tasks;
 
 namespace Emailer.Services
 {
-    public class Mailer
+    public class Mailer: IEmailer
     {
         private const string username = "";
         private const string password = "";
-
         private const string from = "";
-
         private const string to = "";
 
         public Mailer()
@@ -35,7 +33,7 @@ namespace Emailer.Services
 
             var subject = "Testing from .net core";
             var body = "this is just a test";
-            var message = new MailMessage("","", subject, body)
+            var message = new MailMessage(from, to, subject, body)
             {
                 BodyEncoding = UTF8Encoding.UTF8,
                 DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure
