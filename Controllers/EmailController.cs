@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Emailer.Models;
 using Emailer.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,10 +19,10 @@ namespace Emailer.Controllers
         }
         // GET api/email
         [HttpGet]
-        public async Task<IEnumerable<string>> GetAsync()
+        public IActionResult GetAsync()
         {
-            await emailer.SendAsync();
-            return new string[] { "value1", "value2" };
+            //await emailer.SendAsync();
+            return Ok("Email successfully sent");
      
         }
 
@@ -33,9 +35,11 @@ namespace Emailer.Controllers
 
         // POST api/email
         [HttpPost]
-        public void Post([FromBody]string value)
+        public async Task<IActionResult> PostAsync([FromBody]EmailInputModel email)
         {
-
+            Debug.WriteLine(email.CustomerInformation);
+            await emailer.SendAsync(email);
+            return Ok(email.CustomerInformation);
         }
     }
 }

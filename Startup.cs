@@ -18,7 +18,7 @@ namespace Emailer
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IEmailer, MockEmailer>();
+            services.AddScoped<IEmailer, Mailer>();
             services.AddCors();
             services.AddMvc();
         }
@@ -33,7 +33,8 @@ namespace Emailer
 
             app.UseCors(options => 
             {
-                options.WithOrigins("http://192.168.1.10:3000").AllowAnyHeader();
+                options.WithOrigins("http://192.168.1.10:3000", "http://localhost:3000")
+                       .AllowAnyHeader().AllowAnyMethod();
             }); 
 
             app.UseMvc();

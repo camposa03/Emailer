@@ -1,24 +1,31 @@
+using System;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
+using Emailer.Models;
 
 namespace Emailer.Services
 {
     public class Mailer: IEmailer
     {
-        private const string username = "";
-        private const string password = "";
-        private const string from = "";
-        private const string to = "";
+        private const string username = "camposa22@gmail.com";
+        private const string password = "*Zbl2726501";
+        private const string from = "camposa22@gmail.com";
+        private const string to = "camposa22@gmail.com";
 
         public Mailer()
         {
         }
 
-        public async Task SendAsync()
+        public async Task SendAsync(EmailInputModel emailInfo)
         {
+            if (emailInfo == null)
+            {
+                throw new ArgumentNullException(nameof(emailInfo));
+            }
+
             var client = new SmtpClient()
             {
                 Port = 587,
@@ -31,8 +38,8 @@ namespace Emailer.Services
 
             };
 
-            var subject = "Testing from .net core";
-            var body = "this is just a test";
+            var subject = $"Oasis Application:TEST - {emailInfo.CustomerFirstName} {emailInfo.CustomerLastName}";
+            var body = emailInfo.CustomerInformation;
             var message = new MailMessage(from, to, subject, body)
             {
                 BodyEncoding = UTF8Encoding.UTF8,
