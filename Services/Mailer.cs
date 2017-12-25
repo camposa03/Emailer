@@ -10,10 +10,10 @@ namespace Emailer.Services
 {
     public class Mailer: IEmailer
     {
-        private const string username = "camposa22@gmail.com";
-        private const string password = "*Zbl2726501";
-        private const string from = "camposa22@gmail.com";
-        private const string to = "camposa22@gmail.com";
+        private const string username = "";
+        private const string password = "";
+        private const string from = "";
+        private const string to = "";
 
         public Mailer()
         {
