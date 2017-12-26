@@ -5,18 +5,19 @@ using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 using Emailer.Models;
+using Microsoft.Extensions.Options;
+using System.Collections.Generic;
 
 namespace Emailer.Services
 {
-    public class Mailer: IEmailer
+    public class Mailer : IEmailer
     {
-        private const string username = "";
-        private const string password = "";
-        private const string from = "";
-        private const string to = "";
+        private Dictionary<string, string> emailMapping = new Dictionary<string, string>();
 
-        public Mailer()
+        private readonly EmailSettings emailSettings;
+        public Mailer(IOptionsSnapshot<EmailSettings> emailSettings)
         {
+            this.emailSettings = emailSettings.Value;
         }
 
         public async Task SendAsync(EmailInputModel emailInfo)
@@ -34,13 +35,13 @@ namespace Emailer.Services
                 EnableSsl = true,
                 Timeout = 5000,
                 Host = "smtp.gmail.com",
-                Credentials = new NetworkCredential(username, password)
+                Credentials = new NetworkCredential(emailSettings.Username, emailSettings.Password)
 
             };
 
             var subject = $"Oasis Application:TEST - {emailInfo.CustomerFirstName} {emailInfo.CustomerLastName}";
             var body = emailInfo.CustomerInformation;
-            var message = new MailMessage(from, to, subject, body)
+            var message = new MailMessage(emailSettings.From, emailSettings.To, subject, body)
             {
                 BodyEncoding = UTF8Encoding.UTF8,
                 DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure
@@ -57,10 +58,7 @@ namespace Emailer.Services
                     Debug.WriteLine(e.Message);
                     throw;
                 }
-                
-                
             }
-
         }
     }
 }

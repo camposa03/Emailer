@@ -22,7 +22,7 @@ namespace Emailer.Controllers
         public IActionResult GetAsync()
         {
             //await emailer.SendAsync();
-            return Ok("Email successfully sent");
+            return Ok("Service is up and running...");
      
         }
 
