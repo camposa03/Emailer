@@ -18,10 +18,12 @@ namespace Emailer
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
-            services.AddScoped<IEmailer, Mailer>();
+            services.AddOptions();
+            services.AddScoped<IEmailer, MockEmailer>();
             services.AddCors();
             services.AddMvc();
+
+            services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -39,6 +41,7 @@ namespace Emailer
             }); 
 
             app.UseMvc();
+
         }
     }
 }

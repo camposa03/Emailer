@@ -19,9 +19,12 @@ namespace Emailer.Services
             {
                 throw new ArgumentNullException(nameof(emailInfo));
             }
-        
-            Debug.WriteLine("Sending fake email...");
-            Debug.WriteLine($"Sending to {emailSettings.To} from {emailSettings.From}");
+
+            var storeNameMapped = MessageManager.toStoreName(emailInfo.StoreName);
+
+            var emailAddressRecipient = MessageManager.EmailAddress(storeNameMapped);
+            Debug.WriteLine($"Sending fake email to {emailAddressRecipient}");
+            Debug.WriteLine($"Sending to {emailAddressRecipient} from {emailSettings.From}");
 
             await Task.FromResult(0);
         }

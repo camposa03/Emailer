@@ -19,5 +19,11 @@ namespace Emailer.Models
         /// <returns></returns>
         public string CustomerLastName { get;set; }
 
+        /// <summary>
+        /// The store that the customer is applying from
+        /// </summary>
+        /// <returns></returns>
+        public string StoreName { get; set; }
+
     }
 }

@@ -22,8 +22,7 @@ namespace Emailer.Controllers
         public IActionResult GetAsync()
         {
             //await emailer.SendAsync();
-            return Ok("Service is up and running...");
-     
+            return Ok("Service is up and running...");  
         }
 
         // GET api/email/5
