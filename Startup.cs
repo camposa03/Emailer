@@ -1,6 +1,7 @@
 ﻿using Emailer.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -19,9 +20,11 @@ namespace Emailer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddOptions();
-            services.AddScoped<IEmailer, MockEmailer>();
+            services.AddScoped<IEmailer, Mailer>();
             services.AddCors();
             services.AddMvc();
+
+            services.AddSingleton<Encrypter>();
 
             services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
         }
@@ -34,9 +37,15 @@ namespace Emailer
                 app.UseDeveloperExceptionPage();
             }
 
+            //this middleware supports using nginx as a reverse proxy
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
+
             app.UseCors(options => 
             {
-                options.WithOrigins("http://192.168.1.10:3000", "http://localhost:3000")
+                options.AllowAnyOrigin()
                        .AllowAnyHeader().AllowAnyMethod();
             }); 
 

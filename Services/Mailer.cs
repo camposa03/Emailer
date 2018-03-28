@@ -13,7 +13,6 @@ namespace Emailer.Services
     public class Mailer : IEmailer
     {
         private Dictionary<string, string> emailMapping = new Dictionary<string, string>();
-
         private readonly EmailSettings emailSettings;
         public Mailer(IOptionsSnapshot<EmailSettings> emailSettings)
         {
@@ -26,6 +25,10 @@ namespace Emailer.Services
             {
                 throw new ArgumentNullException(nameof(emailInfo));
             }
+
+            var storeNameMapped = MessageManager.toStoreName(emailInfo.StoreName);
+
+            var emailAddressRecipient = MessageManager.EmailAddress(storeNameMapped);
 
             var client = new SmtpClient()
             {
@@ -41,11 +44,14 @@ namespace Emailer.Services
 
             var subject = $"Oasis Application:TEST - {emailInfo.CustomerFirstName} {emailInfo.CustomerLastName}";
             var body = emailInfo.CustomerInformation;
-            var message = new MailMessage(emailSettings.From, emailSettings.To, subject, body)
+            //var message = new MailMessage(emailSettings.From, emailSettings.To, subject, body)
+            var message = new MailMessage(emailSettings.From, emailAddressRecipient, subject, body)
             {
                 BodyEncoding = UTF8Encoding.UTF8,
                 DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure
             };
+
+            message.CC.Add(emailSettings.To);
 
             using (client)
             {
